@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">foodApp</string>
+    <string name="title_name">Meal Mate</string>
+    <string name="swipe_text">Swipe left to begin</string>
+    <string name="title_activity_map">Map</string>
+    <string name="title_pick_parameters">Pick Your Parameters</string>
+    <string name="open_now">Must be open now:</string>
+    <string name="search_button">Search</string>
+    <string name="text_1km">1 km</string>
+    <string name="text_3km">3 km</string>
+    <string name="text_10km">10 km</string>
+    <string name="radius_text">Select a radius of search:</string>
+    <string name="google_maps_API_key">AIzaSyBTKbZKxNpIZJLPqSuJvPJabcrrGWEYaFM</string>
+    <string name="google_places_API_key">AIzaSyBTKbZKxNpIZJLPqSuJvPJabcrrGWEYaFM</string>
 </resources>

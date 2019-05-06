@@ -1,9 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_gravity="center_horizontal"
     tools:context=".decisionScreen">
 
-</android.support.constraint.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/parameters_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/title_pick_parameters"
+        android:layout_alignParentTop="true"
+        android:gravity="center"
+        android:paddingTop="50dp"
+        android:paddingBottom="50dp"
+        android:fontFamily="sans-serif-condensed"
+        android:textSize="40sp"
+        android:textColor="#000000"
+        />
+
+    <Switch
+        android:id="@+id/switch1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_gravity="center_horizontal"
+        android:layout_below="@id/parameters_title"
+        android:text="@string/open_now"
+        android:fontFamily="sans-serif-condensed"
+        android:textSize="30sp"
+        android:switchPadding="15dp"
+        android:textColor="#000000"
+        android:layout_centerHorizontal="true"
+        android:onClick="openSwitchClicked"
+
+        />
+
+    <Button
+        android:id="@+id/search_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:textSize="25sp"
+        android:textColor="#000000"
+        android:onClick="startSearch"
+        android:text="@string/search_button"
+        android:padding="15dp"/>
+
+    <TextView
+        android:id="@+id/radiusText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/switch1"
+        android:text="@string/radius_text"
+        android:paddingTop="30dp"
+        android:paddingBottom="10dp"
+        android:fontFamily="sans-serif-condensed"
+        android:textSize="30sp"
+        android:textColor="#000000"
+        android:layout_centerHorizontal="true" />
+
+    <RadioGroup
+        android:id="@+id/radiusGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/radiusText"
+        android:orientation="horizontal"
+        android:layout_centerHorizontal="true">
+
+        <RadioButton
+            android:id="@+id/radio1km"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-condensed"
+            android:layout_below="@id/radiusText"
+            android:text="@string/text_1km"
+            android:textColor="#000000"
+            android:checked="true"
+            android:textSize="20sp" />
+        <RadioButton
+            android:id="@+id/radio3km"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-condensed"
+            android:layout_below="@id/radiusText"
+            android:text="@string/text_3km"
+            android:textColor="#000000"
+            android:textSize="20sp" />
+        <RadioButton
+            android:id="@+id/radio10km"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-condensed"
+            android:layout_below="@id/radiusText"
+            android:text="@string/text_10km"
+            android:textColor="#000000"
+            android:textSize="20sp" />
+
+    </RadioGroup>
+
+
+
+
+
+</RelativeLayout>
