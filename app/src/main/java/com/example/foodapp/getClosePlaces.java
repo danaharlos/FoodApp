@@ -1,9 +1,11 @@
 package com.example.foodapp;
 
+import android.media.Image;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -28,6 +30,12 @@ public class getClosePlaces extends AsyncTask<Object, String, String> {
     StringBuilder stringBuilder;
     String rawData;
 //https://www.youtube.com/watch?v=YlJk-YCmomg&list=PLF0BIlN2vd8und4ajF-bdFI3jWyPTXxB5&index=2 tutorial
+
+    /**
+     *
+     * @param objects
+     * @return
+     */
     @Override
     protected String doInBackground(Object... objects) {
         nMap = (GoogleMap)objects[0];
@@ -53,13 +61,12 @@ public class getClosePlaces extends AsyncTask<Object, String, String> {
     }
 
     /**
-     * Fetches and parses json from google places API and displays
-     * them to google maps
+     * Fetches and parses json from google places API and displays nearby places
+     * to google maps
      * @param s json response from google places web api
      */
     @Override
     protected void onPostExecute(String s) {
-        //Toast.makeText(context, s, Toast.LENGTH_SHORT).show();
 
         try {
             JSONObject parentObject = new JSONObject(s);
@@ -73,12 +80,17 @@ public class getClosePlaces extends AsyncTask<Object, String, String> {
                 JSONObject nameObject = resultsArray.getJSONObject((i));
                 String name_restaurant = nameObject.getString("name");
                 String vicinity = nameObject.getString("vicinity");
+                int rating = jsonObject.getInt("rating");
+                int price = jsonObject.getInt("price_level");
+                String snippet = "Rating is "+rating+"/5, price level is "+(price+1)+"/5.\nAddress is "+vicinity+".";
 
                 LatLng latLng= new LatLng(Double.parseDouble((latitude)), Double.parseDouble(longitude));
                 MarkerOptions markerOptions = new MarkerOptions();
                 markerOptions.title(name_restaurant);
                 markerOptions.position(latLng);
 
+                markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+                markerOptions.snippet(snippet);
                 nMap.addMarker(markerOptions);
             }
 

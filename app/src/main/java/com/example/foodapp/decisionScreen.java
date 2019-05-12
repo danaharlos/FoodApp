@@ -3,9 +3,11 @@ package com.example.foodapp;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Switch;
@@ -42,16 +44,29 @@ public class decisionScreen extends AppCompatActivity {
         openNow = on;
     }
 
+    /**
+     * This method called when the Start Search button is pressed, it collects the parameters the user inputted,
+     * stops the decisionScreen activity and starts the MapActivity which shows the map with the nearby restaurants
+     * based off the users parameters
+     * @param v
+     */
     public void startSearch(View v){
-
+        EditText simpleEditText = (EditText) findViewById(R.id.editText); //get keyword from text box
+        String keyword = simpleEditText.getText().toString();
+        if(keyword.equals("")){
+            keyword = "null";
+        }
+        Log.d("searchText", "The search keyword is:"+keyword);
         int radius = updateRadius(v);
 
         Intent intent = new Intent(
                 decisionScreen.this, MapActivity.class);
         intent.putExtra("openNow", openNow);
         intent.putExtra("radius", radius);
+        intent.putExtra("keyword", keyword);
         finish(); //stops history for decision screen activity class
         startActivity(intent);
+
     }
 
     /**
@@ -61,12 +76,19 @@ public class decisionScreen extends AppCompatActivity {
      */
     public int updateRadius(View v) {
         RadioButton rb = (RadioButton) radiusRadioGroup.findViewById(radiusRadioGroup.getCheckedRadioButtonId());
-        if(rb.getText() == "10 km") {
-            return 10000;
+        if(rb.getText().toString().equals("2 km")) {
+            Log.d("radius", "2km pressed");
+            return 2000;
         }
-        if(rb.getText() == "3 km") {
-            return 3000;
+        if(rb.getText().toString().equals("1 km")) {
+            Log.d("radius", "1km pressed");
+            return 1000;
         }
-        else return 1000; //if there is error and no button is pushed, default to 1km
+        else{
+            Log.d("radius", "0.5km pressed");
+            Log.d("radius", "rb message is: "+rb.getText());
+            Log.d("radius", "rb message is:\n"+rb.getText()+"\n"+"3 km");
+            return 500; //if there is error and no button is pushed, default to 0.5 km
+        }
     }
 }

@@ -10,7 +10,9 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -24,7 +26,9 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 
@@ -36,11 +40,14 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     GoogleApiClient client;
     LocationRequest request;
     LatLng currentLatLng;
+    int zoomValue;
+    boolean first = true; //so that camera zoom only happens on frst update on current location
     //FusedLocationProviderClient mFusedLocationClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
         setContentView(R.layout.activity_map);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -56,15 +63,14 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
+     * This is where we can add markers or lines, add listeners or move the camera.
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        if(mMap!=null) {
+           mMap.setInfoWindowAdapter(new MyCustomInfoWindow(MapActivity.this));
+        }
         //Followed this tutorial https://www.youtube.com/watch?v=oOVRNxPtfeQ
         client = new GoogleApiClient.Builder(this)
                 .addApi(LocationServices.API)
@@ -73,6 +79,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                 .build();
 
         client.connect();
+
+
         /*
         // Add a marker in Sydney and move the camera
         LatLng sydney = new LatLng(-34, 151);
@@ -84,12 +92,27 @@ public void findRestaurants(View v){
         Intent intent = getIntent();
         boolean open = intent.getBooleanExtra("openNow", false);
         int radius = intent.getIntExtra("radius", 1000);
+        String keyword = (String) intent.getStringExtra("keyword");
+
+        Log.d("radiusActual", "radius is "+radius);
+        if(radius == 1000){
+            zoomValue = 15;
+        }else if (radius == 500){
+            zoomValue = 17;
+        }
+        else{
+            zoomValue = 15; //zoom out if radius is larger
+        }
 
         StringBuilder stringBuilder = new StringBuilder(("https://maps.googleapis.com/maps/api/place/nearbysearch/json?"));
         stringBuilder.append("location=" +currentLatLng.latitude+","+currentLatLng.longitude);
-
+        if(keyword.equals("null")){
+            stringBuilder.append("&type="+"restaurant");
+        }else{
+            stringBuilder.append("&keyword="+keyword);
+        }
         stringBuilder.append("&radius="+radius);
-        stringBuilder.append("&type="+"restaurant");
+
 
         if(open) {
             stringBuilder.append("&opennow="+"true");
@@ -106,8 +129,20 @@ public void findRestaurants(View v){
 }
 
     /**
+     * Sends user back to parameter screen from map
+     * @param v
+     */
+    public void restart(View v) {
+        first = true;
+        Intent intent = new Intent(
+                MapActivity.this, decisionScreen.class);
+        finish(); //stops history for decision screen activity class
+        startActivity(intent);
+    }
+
+    /**
      *
-     * Triggered when
+     * updates current location on map
      * Followed tutorial at https://www.youtube.com/watch?v=oOVRNxPtfeQ
      * @param location
      */
@@ -117,12 +152,20 @@ public void findRestaurants(View v){
             Toast.makeText(getApplicationContext(), "Location not found.", Toast.LENGTH_SHORT).show();
         } else {
             currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
-            CameraUpdate update = CameraUpdateFactory.newLatLngZoom(currentLatLng, 15);
-            mMap.animateCamera(update);
+            View v = findViewById(R.id.map);
+            findRestaurants(v);
+            if(first) {
+                CameraUpdate update = CameraUpdateFactory.newLatLngZoom(currentLatLng, zoomValue);
+                mMap.animateCamera(update);
+                first = false;
+            }
             MarkerOptions options = new MarkerOptions();
             options.position(currentLatLng);
             options.title("Current Location");
             mMap.addMarker(options);
+
+
+
         }
 
     }

@@ -6,9 +6,11 @@
     <string name="title_pick_parameters">Pick Your Parameters</string>
     <string name="open_now">Must be open now:</string>
     <string name="search_button">Search</string>
+    <string name="text_05km">0.5 km</string>
     <string name="text_1km">1 km</string>
-    <string name="text_3km">3 km</string>
-    <string name="text_10km">10 km</string>
+    <string name="text_2km">2 km</string>
+    <string name="key_text">Enter a keyword:</string>
+    <string name="example">For example: pizza, seafood, Chinese</string>
     <string name="radius_text">Select a radius of search:</string>
     <string name="google_maps_API_key">AIzaSyBTKbZKxNpIZJLPqSuJvPJabcrrGWEYaFM</string>
     <string name="google_places_API_key">AIzaSyBTKbZKxNpIZJLPqSuJvPJabcrrGWEYaFM</string>
