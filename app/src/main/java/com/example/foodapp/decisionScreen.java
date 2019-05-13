@@ -15,7 +15,11 @@ import android.widget.Toast;
 
 public class decisionScreen extends AppCompatActivity {
     boolean openNow; //true if user only wants to show restaurants that are open at that time
-    private RadioGroup radiusRadioGroup;
+    private RadioGroup radiusRadioGroup; //picks the radius
+
+    /**
+     * On creation of decision screen activity, sets up switches and radio group.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

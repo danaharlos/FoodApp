@@ -29,10 +29,13 @@ public class getClosePlaces extends AsyncTask<Object, String, String> {
     BufferedReader bufferedReader;
     StringBuilder stringBuilder;
     String rawData;
-//https://www.youtube.com/watch?v=YlJk-YCmomg&list=PLF0BIlN2vd8und4ajF-bdFI3jWyPTXxB5&index=2 tutorial
+//
 
     /**
-     *
+     * Returns raw data of nearby places from a URL connection. This data needs to be parsed
+     * stil to provide information about nearby places.
+     * Followed this tutorial:
+     * https://www.youtube.com/watch?v=YlJk-YCmomg&list=PLF0BIlN2vd8und4ajF-bdFI3jWyPTXxB5&index=2
      * @param objects
      * @return
      */
@@ -48,7 +51,7 @@ public class getClosePlaces extends AsyncTask<Object, String, String> {
             bufferedReader = new BufferedReader(new InputStreamReader(inputstream));
             String x = "";
             stringBuilder = new StringBuilder();
-            while((x =bufferedReader.readLine())!=null){
+            while((x = bufferedReader.readLine())!=null){
                 stringBuilder.append(x);
             }
             rawData = stringBuilder.toString();
@@ -61,7 +64,7 @@ public class getClosePlaces extends AsyncTask<Object, String, String> {
     }
 
     /**
-     * Fetches and parses json from google places API and displays nearby places
+     * Parses json string from google places API and displays nearby places
      * to google maps
      * @param s json response from google places web api
      */
@@ -71,7 +74,7 @@ public class getClosePlaces extends AsyncTask<Object, String, String> {
         try {
             JSONObject parentObject = new JSONObject(s);
             JSONArray resultsArray = parentObject.getJSONArray("results");
-
+            //each member of the array corresponds to a nearby place
             for(int i = 0; i<resultsArray.length(); i++){
                 JSONObject jsonObject = resultsArray.getJSONObject(i);
                 JSONObject locationObject = jsonObject.getJSONObject("geometry").getJSONObject("location");

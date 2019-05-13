@@ -42,8 +42,11 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     LatLng currentLatLng;
     int zoomValue;
     boolean first = true; //so that camera zoom only happens on frst update on current location
-    //FusedLocationProviderClient mFusedLocationClient;
 
+    /**
+     * This method called on creation of map activity. It sets map up on the screen.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,11 +57,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        //mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-
     }
-
-
 
     /**
      * Manipulates the map once available.
@@ -79,29 +78,25 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                 .build();
 
         client.connect();
-
-
-        /*
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-        */
     }
-public void findRestaurants(View v){
+
+    /**
+     * Gets information from decision screen and based off of that creates a string with the query
+     * and gives it to the getClosePlaces class to get a json back.
+     * @param v
+     */
+    public void findRestaurants(View v){
         Intent intent = getIntent();
         boolean open = intent.getBooleanExtra("openNow", false);
         int radius = intent.getIntExtra("radius", 1000);
         String keyword = (String) intent.getStringExtra("keyword");
 
         Log.d("radiusActual", "radius is "+radius);
-        if(radius == 1000){
-            zoomValue = 15;
-        }else if (radius == 500){
+        if (radius == 500){
             zoomValue = 17;
         }
         else{
-            zoomValue = 15; //zoom out if radius is larger
+            zoomValue = 15; //zoom out if radius is 1km or 2km
         }
 
         StringBuilder stringBuilder = new StringBuilder(("https://maps.googleapis.com/maps/api/place/nearbysearch/json?"));
@@ -186,32 +181,6 @@ public void findRestaurants(View v){
             return;
         }
         LocationServices.FusedLocationApi.requestLocationUpdates(client, request, this);
-
-
-
-        /*   NOT DEPRECATED VERSION - DIDNT WORK?
-        //from https://stackoverflow.com/questions/46481789/android-locationservices-fusedlocationapi-deprecated
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }
-        mFusedLocationClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
-            @Override
-            public void onSuccess(Location location) {
-                // Got last known location. In some rare situations, this can be null.
-                if (location != null) {
-                    // Logic to handle location object
-                }
-            }
-        });
-*/
-
     }
 
 

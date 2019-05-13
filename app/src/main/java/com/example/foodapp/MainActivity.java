@@ -14,6 +14,11 @@ public class MainActivity extends AppCompatActivity {
     private GestureDetectorCompat gestureObject;
     private TextView maintext, swipetext;
 
+    /**
+     * This method called on creation of the main activity. Organizes textviews on the screen
+     * and initializes new gesture detector which will detect for swiping the screen.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,11 +34,16 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    @Override //taken from https://www.youtube.com/watch?v=Q5Ndr944U2o
+    @Override
     public boolean onTouchEvent(MotionEvent event){
         this.gestureObject.onTouchEvent(event);
         return super.onTouchEvent(event);
     }
+
+    /**
+     * This class allows an intent change when a certian MotionEvent happens, ie swiping on the screen
+     * Followed this tutorial https://www.youtube.com/watch?v=Q5Ndr944U2o
+     */
     class LearnGesture extends GestureDetector.SimpleOnGestureListener {
         @Override
         public boolean onFling(MotionEvent event1, MotionEvent event2,
